@@ -27,36 +27,10 @@ export default function Home() {
     const { data, error } = await supabase
       .from('products')
       .select('*');
-    
+
     if (error) {
       console.error('Error fetching products:', error);
-      // Productos de ejemplo si Supabase falla
-      setProducts([
-        {
-          id: 1,
-          name: 'Luffy Chase',
-          price: 89900,
-          image_url: 'https://images.unsplash.com/photo-1578926314433-8e6f4c9f2f8f?w=300&h=300&fit=crop',
-          stock: 1,
-          description: 'Funko Pop exclusivo de Luffy - Edición limitada'
-        },
-        {
-          id: 2,
-          name: 'Naruto Kurama',
-          price: 79900,
-          image_url: 'https://images.unsplash.com/photo-1578926314433-8e6f4c9f2f8f?w=300&h=300&fit=crop',
-          stock: 5,
-          description: 'Naruto con Kurama Nine-Tailed Fox'
-        },
-        {
-          id: 3,
-          name: 'Goku Super Saiyan',
-          price: 84900,
-          image_url: 'https://images.unsplash.com/photo-1578926314433-8e6f4c9f2f8f?w=300&h=300&fit=crop',
-          stock: 3,
-          description: 'Dragon Ball Z - Goku transformado'
-        }
-      ]);
+      setProducts([]);
     } else {
       setProducts(data || []);
     }
@@ -71,23 +45,29 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen bg-black text-white" style={{
-      backgroundImage: 'url("data:image/svg+xml,%3Csvg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"%3E%3Cg fill="none" fill-rule="evenodd"%3E%3Cg fill="%2300d4ff" fill-opacity="0.03"%3E%3Cpath d="M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z"/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")'
-    }}>
+    <div
+      className="min-h-screen bg-black text-white"
+      style={{
+        backgroundImage:
+          'url("data:image/svg+xml,%3Csvg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"%3E%3Cg fill="none" fill-rule="evenodd"%3E%3Cg fill="%2300d4ff" fill-opacity="0.03"%3E%3Cpath d="M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z"/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")',
+      }}
+    >
       {/* HEADER */}
       <header className="border-b-2 border-cyan-500 bg-black/80 backdrop-blur sticky top-0 z-40">
         <div className="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
           <div className="flex items-center gap-2">
             <div className="text-2xl font-bold font-mono text-transparent bg-clip-text bg-gradient-to-r from-cyan-500 to-yellow-400">
-              {'<'} CASA FUNKO {'/>'}</div>
+              {'<'} CASA FUNKO {'/>'}
+            </div>
             <span className="text-xs text-cyan-500 animate-pulse">Manizales</span>
           </div>
-          
+
           <button
             onClick={() => setCartOpen(!cartOpen)}
             className="relative px-6 py-2 border-2 border-cyan-500 bg-black hover:bg-cyan-500/10 transition-all font-mono text-cyan-400 hover:text-cyan-300"
             style={{
-              boxShadow: '0 0 10px rgba(0, 212, 255, 0.5), inset 0 0 10px rgba(0, 212, 255, 0.1)'
+              boxShadow:
+                '0 0 10px rgba(0, 212, 255, 0.5), inset 0 0 10px rgba(0, 212, 255, 0.1)',
             }}
           >
             🛒 CARRITO ({cartItems.length})
@@ -99,7 +79,7 @@ export default function Home() {
       <section className="relative py-20 px-4 border-b-2 border-yellow-400/30 overflow-hidden">
         <div className="absolute inset-0 opacity-20">
           <div className="absolute top-10 left-10 text-cyan-500/20 font-mono text-xs whitespace-pre">
-{`> system.boot()
+            {`> system.boot()
   ┌─────────────────────┐
   │ FUNKO.NEXUS v2.0.1 │
   └─────────────────────┘
@@ -111,11 +91,11 @@ export default function Home() {
           <h1 className="text-5xl md:text-6xl font-black mb-4 font-mono text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-yellow-400 to-cyan-400 animate-pulse">
             CASA FUNKO
           </h1>
-          
+
           <p className="text-lg text-cyan-300 mb-2 font-mono">
             // La oda a los Funkos en código limpio
           </p>
-          
+
           <p className="text-yellow-400 font-mono mb-8 text-sm">
             {'{'} pixel_art: true, anime: 'essential', vibe: 'cyberpunk' {'}'}
           </p>

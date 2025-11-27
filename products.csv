@@ -1,0 +1,13 @@
+name,price,cost,stock,category,description,image_url
+"The Joker (Chase)",260000,109800,2,"TESORO","Chase exclusivo. Pieza joya para vitrina principal.","https://images.unsplash.com/photo-1578926287945-334a0e3d45c3?w=300&h=300&fit=crop"
+"Eeyore (Flocked)",210000,107132,1,"TESORO","Disney flocked. Alto valor percibido.","https://images.unsplash.com/photo-1545239351-1141bd82e8a6?w=300&h=300&fit=crop"
+"Bambi (Sketched)",125000,62160,1,"TESORO","Art Series. Para coleccionistas estéticos.","https://images.unsplash.com/photo-1514894780887-121968d00567?w=300&h=300&fit=crop"
+"Mitsuki (Snake Hands)",75000,28300,1,"HYPE","Boruto, diseño dinámico. Precio estándar anime.","https://images.unsplash.com/photo-1548436802-9872a2a5dcd8?w=300&h=300&fit=crop"
+"Gyokko (Demon Slayer)",75000,28883,0,"HYPE","Villano Demon Slayer. Ya vendido, mostrar como agotado.","https://images.unsplash.com/photo-1548436802-9872a2a5dcd8?w=300&h=300&fit=crop"
+"Hantengu (Demon Slayer)",65000,19242,1,"HYPE","Costo bajo, gancho para fans de Demon Slayer.","https://images.unsplash.com/photo-1548436802-9872a2a5dcd8?w=300&h=300&fit=crop"
+"Boromir (Meme)",80000,26700,1,"HYPE","'One does not simply...' ideal para vender por el meme.","https://images.unsplash.com/photo-1548436802-9872a2a5dcd8?w=300&h=300&fit=crop"
+"Charmander (Soft)",70000,28883,1,"HYPE","Pokémon clásico, rotación constante.","https://images.unsplash.com/photo-1548436802-9872a2a5dcd8?w=300&h=300&fit=crop"
+"Sabine Wren (SW)",60000,13496,1,"MARGEN","Exclusivo Amazon, margen muy alto.","https://images.unsplash.com/photo-1548436802-9872a2a5dcd8?w=300&h=300&fit=crop"
+"The Corinthian",55000,16504,1,"MARGEN","The Sandman. Buen precio de entrada a la serie.","https://images.unsplash.com/photo-1548436802-9872a2a5dcd8?w=300&h=300&fit=crop"
+"Vito Corleone",60000,18394,1,"MARGEN","El Padrino. Obligatorio para cinéfilos.","https://images.unsplash.com/photo-1548436802-9872a2a5dcd8?w=300&h=300&fit=crop"
+"Bazil (The Acolyte)",60000,21556,1,"MARGEN","Star Wars. Ideal para completistas.","https://images.unsplash.com/photo-1548436802-9872a2a5dcd8?w=300&h=300&fit=crop"
