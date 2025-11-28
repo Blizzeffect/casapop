@@ -1,6 +1,5 @@
 import { createClient } from '@supabase/supabase-js';
 import crypto from 'crypto';
-import { NextRequest, NextResponse } from 'next/server';
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -47,23 +46,20 @@ function mapMPStatus(mpStatus: string): string {
   return statusMap[mpStatus] || 'pending';
 }
 
-export async function POST(request: NextRequest) {
+export async function POST(request: Request) {
   try {
     const body = await request.text();
     const xSignature = request.headers.get('x-signature');
 
-    console.log('🔔 Webhook received:', {
-      signature: xSignature?.substring(0, 20) + '...',
-      bodyLength: body.length,
-    });
+    console.log('🔔 Webhook received');
 
-    // ⚠️ IMPORTANTE: Verificar firma SOLO si la clave está disponible
+    // Verificar firma SOLO si está disponible
     if (xSignature && process.env.MP_WEBHOOK_SECRET) {
       if (!verifyWebhookSignature(body, xSignature)) {
         console.error('❌ Invalid webhook signature');
-        return NextResponse.json(
-          { error: 'Invalid signature' },
-          { status: 401 }
+        return new Response(
+          JSON.stringify({ error: 'Invalid signature' }),
+          { status: 401, headers: { 'Content-Type': 'application/json' } }
         );
       }
       console.log('✅ Signature verified');
@@ -75,8 +71,11 @@ export async function POST(request: NextRequest) {
 
     // Solo procesamos notificaciones de pago
     if (payload.type !== 'payment') {
-      console.log('⏭️  Skipping non-payment event:', payload.type);
-      return NextResponse.json({ success: true }, { status: 200 });
+      console.log('⏭️ Skipping non-payment event:', payload.type);
+      return new Response(
+        JSON.stringify({ success: true }),
+        { status: 200, headers: { 'Content-Type': 'application/json' } }
+      );
     }
 
     const paymentId = payload.data?.id;
@@ -84,9 +83,9 @@ export async function POST(request: NextRequest) {
 
     if (!paymentId) {
       console.error('❌ No payment ID in webhook');
-      return NextResponse.json(
-        { error: 'No payment ID' },
-        { status: 400 }
+      return new Response(
+        JSON.stringify({ error: 'No payment ID' }),
+        { status: 400, headers: { 'Content-Type': 'application/json' } }
       );
     }
 
@@ -101,15 +100,13 @@ export async function POST(request: NextRequest) {
       .eq('payment_id', paymentId)
       .single();
 
-    if (fetchError) {
-      console.warn('⚠️ Order not found for payment:', paymentId, fetchError);
-      // No fallar si no encontramos la orden (puede ser válido en algunos casos)
-      return NextResponse.json({ success: true }, { status: 200 });
-    }
-
-    if (!order) {
-      console.warn('⚠️ Order data is null for payment:', paymentId);
-      return NextResponse.json({ success: true }, { status: 200 });
+    if (fetchError || !order) {
+      console.warn('⚠️ Order not found for payment:', paymentId);
+      // No fallar si no encontramos la orden
+      return new Response(
+        JSON.stringify({ success: true }),
+        { status: 200, headers: { 'Content-Type': 'application/json' } }
+      );
     }
 
     // Actualizar el estado de la orden
@@ -124,20 +121,23 @@ export async function POST(request: NextRequest) {
 
     if (updateError) {
       console.error('❌ Error updating order:', updateError);
-      return NextResponse.json(
-        { error: 'Error updating order' },
-        { status: 500 }
+      return new Response(
+        JSON.stringify({ error: 'Error updating order' }),
+        { status: 500, headers: { 'Content-Type': 'application/json' } }
       );
     }
 
     console.log(`✅ Order ${order.reference} updated to ${orderStatus}`);
 
-    return NextResponse.json({ success: true }, { status: 200 });
+    return new Response(
+      JSON.stringify({ success: true }),
+      { status: 200, headers: { 'Content-Type': 'application/json' } }
+    );
   } catch (error) {
     console.error('❌ Webhook error:', error);
-    return NextResponse.json(
-      { error: 'Internal server error' },
-      { status: 500 }
+    return new Response(
+      JSON.stringify({ error: 'Internal server error' }),
+      { status: 500, headers: { 'Content-Type': 'application/json' } }
     );
   }
 }
