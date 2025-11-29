@@ -4,6 +4,11 @@
 
 import { useState, FormEvent } from 'react';
 
+const TEMPLATE_BACKGROUND_URLS: Record<string, string> = {
+  default:
+    'https://kcesbopmsmbbxczkooay.supabase.co/storage/v1/object/public/funkos/templates/default.png',
+};
+
 export default function NewProductPage() {
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
@@ -36,18 +41,16 @@ export default function NewProductPage() {
     setMessage(null);
 
     if (!name || !price || !stock || !imageFile) {
-      setMessage('Faltan campos obligatorios (nombre, precio, stock o imagen).');
+      setMessage(
+        'Faltan campos obligatorios (nombre, precio, stock o imagen).'
+      );
       return;
     }
 
     try {
       setIsSubmitting(true);
 
-      // AQUÍ MÁS ADELANTE:
-      // 1) Subiremos imageFile a Supabase Storage (bucket "funkos")
-      // 2) Obtendremos la URL pública
-      // 3) Llamaremos a una API o server action para insertar en public.products
-
+      // Próximo paso: subir imageFile a Supabase y guardar en products
       console.log('Simulando envío de producto:', {
         name,
         price,
@@ -59,7 +62,9 @@ export default function NewProductPage() {
         imageFile,
       });
 
-      setMessage('Producto registrado (simulado). Luego conectamos con Supabase.');
+      setMessage(
+        'Producto registrado (simulado). Luego conectamos con Supabase.'
+      );
     } catch (error) {
       console.error(error);
       setMessage('Error al guardar el producto.');
@@ -72,12 +77,25 @@ export default function NewProductPage() {
     <div style={{ maxWidth: 900, margin: '0 auto', padding: '2rem' }}>
       <h1 style={{ fontSize: '1.8rem', marginBottom: '1rem' }}>Nuevo Funko</h1>
 
-      <form onSubmit={handleSubmit} style={{ display: 'grid', gap: '1.5rem', gridTemplateColumns: '1.5fr 1fr' }}>
+      <form
+        onSubmit={handleSubmit}
+        style={{
+          display: 'grid',
+          gap: '1.5rem',
+          gridTemplateColumns: '1.5fr 1fr',
+        }}
+      >
         {/* Columna izquierda: campos */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
           {/* Imagen */}
           <div>
-            <label style={{ display: 'block', fontWeight: 'bold', marginBottom: 4 }}>
+            <label
+              style={{
+                display: 'block',
+                fontWeight: 'bold',
+                marginBottom: 4,
+              }}
+            >
               Imagen del Funko (PNG/JPG)
             </label>
             <input
@@ -89,7 +107,13 @@ export default function NewProductPage() {
 
           {/* Datos básicos */}
           <div>
-            <label style={{ display: 'block', fontWeight: 'bold', marginBottom: 4 }}>
+            <label
+              style={{
+                display: 'block',
+                fontWeight: 'bold',
+                marginBottom: 4,
+              }}
+            >
               Nombre
             </label>
             <input
@@ -103,39 +127,63 @@ export default function NewProductPage() {
 
           <div style={{ display: 'flex', gap: '1rem' }}>
             <div style={{ flex: 1 }}>
-              <label style={{ display: 'block', fontWeight: 'bold', marginBottom: 4 }}>
+              <label
+                style={{
+                  display: 'block',
+                  fontWeight: 'bold',
+                  marginBottom: 4,
+                }}
+              >
                 Precio (venta)
               </label>
               <input
                 type="number"
                 value={price}
-                onChange={(e) => setPrice(e.target.value ? Number(e.target.value) : '')}
+                onChange={(e) =>
+                  setPrice(e.target.value ? Number(e.target.value) : '')
+                }
                 placeholder="Ej: 120000"
                 style={{ width: '100%', padding: '0.5rem' }}
               />
             </div>
 
             <div style={{ flex: 1 }}>
-              <label style={{ display: 'block', fontWeight: 'bold', marginBottom: 4 }}>
+              <label
+                style={{
+                  display: 'block',
+                  fontWeight: 'bold',
+                  marginBottom: 4,
+                }}
+              >
                 Costo (opcional)
               </label>
               <input
                 type="number"
                 value={cost}
-                onChange={(e) => setCost(e.target.value ? Number(e.target.value) : '')}
+                onChange={(e) =>
+                  setCost(e.target.value ? Number(e.target.value) : '')
+                }
                 placeholder="Ej: 80000"
                 style={{ width: '100%', padding: '0.5rem' }}
               />
             </div>
 
             <div style={{ flex: 1 }}>
-              <label style={{ display: 'block', fontWeight: 'bold', marginBottom: 4 }}>
+              <label
+                style={{
+                  display: 'block',
+                  fontWeight: 'bold',
+                  marginBottom: 4,
+                }}
+              >
                 Stock
               </label>
               <input
                 type="number"
                 value={stock}
-                onChange={(e) => setStock(e.target.value ? Number(e.target.value) : '')}
+                onChange={(e) =>
+                  setStock(e.target.value ? Number(e.target.value) : '')
+                }
                 placeholder="Ej: 5"
                 style={{ width: '100%', padding: '0.5rem' }}
               />
@@ -144,7 +192,13 @@ export default function NewProductPage() {
 
           {/* Clasificación */}
           <div>
-            <label style={{ display: 'block', fontWeight: 'bold', marginBottom: 4 }}>
+            <label
+              style={{
+                display: 'block',
+                fontWeight: 'bold',
+                marginBottom: 4,
+              }}
+            >
               Categoría
             </label>
             <input
@@ -158,7 +212,13 @@ export default function NewProductPage() {
 
           {/* Descripción */}
           <div>
-            <label style={{ display: 'block', fontWeight: 'bold', marginBottom: 4 }}>
+            <label
+              style={{
+                display: 'block',
+                fontWeight: 'bold',
+                marginBottom: 4,
+              }}
+            >
               Descripción
             </label>
             <textarea
@@ -172,25 +232,34 @@ export default function NewProductPage() {
 
           {/* Plantilla (por ahora fija) */}
           <div>
-            <label style={{ display: 'block', fontWeight: 'bold', marginBottom: 4 }}>
+            <label
+              style={{
+                display: 'block',
+                fontWeight: 'bold',
+                marginBottom: 4,
+              }}
+            >
               Plantilla
             </label>
             <input
               type="text"
               value="default"
               disabled
-              style={{ width: '100%', padding: '0.5rem', backgroundColor: '#f3f3f3' }}
+              style={{
+                width: '100%',
+                padding: '0.5rem',
+                backgroundColor: '#f3f3f3',
+              }}
             />
             <small style={{ color: '#666' }}>
-              Por ahora solo usamos la plantilla “default”. Más adelante agregamos más opciones.
+              Por ahora solo usamos la plantilla “default”. Más adelante
+              agregamos más opciones.
             </small>
           </div>
 
           {/* Mensaje y botón */}
           {message && (
-            <div style={{ marginTop: '0.5rem', color: '#444' }}>
-              {message}
-            </div>
+            <div style={{ marginTop: '0.5rem', color: '#444' }}>{message}</div>
           )}
 
           <button
@@ -223,13 +292,18 @@ export default function NewProductPage() {
             gap: '1rem',
           }}
         >
-          <h2 style={{ fontSize: '1.2rem', marginBottom: '0.5rem' }}>Vista previa</h2>
+          <h2 style={{ fontSize: '1.2rem', marginBottom: '0.5rem' }}>
+            Vista previa
+          </h2>
+
           <div
             style={{
               width: '100%',
               aspectRatio: '3 / 4',
               borderRadius: 12,
-              background: '#e5e7eb',
+              backgroundImage: `url(${TEMPLATE_BACKGROUND_URLS['default']})`,
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
@@ -237,16 +311,6 @@ export default function NewProductPage() {
               position: 'relative',
             }}
           >
-            {/* Futuro: aquí entra la plantilla en el fondo según template */}
-            <div
-              style={{
-                position: 'absolute',
-                inset: 0,
-                background: 'linear-gradient(135deg, #4c1d95, #111827)',
-                opacity: 0.5,
-              }}
-            />
-
             {previewUrl ? (
               <img
                 src={previewUrl}
@@ -267,14 +331,16 @@ export default function NewProductPage() {
           </div>
 
           <div>
-            <div style={{ fontWeight: 'bold' }}>{name || 'Nombre del Funko'}</div>
+            <div style={{ fontWeight: 'bold' }}>
+              {name || 'Nombre del Funko'}
+            </div>
             <div style={{ color: '#4b5563' }}>
-              {price ? `Precio: $${price.toLocaleString('es-CO')}` : 'Precio aún sin definir'}
+              {price
+                ? `Precio: $${price.toLocaleString('es-CO')}`
+                : 'Precio aún sin definir'}
             </div>
             {stock !== '' && (
-              <div style={{ color: '#4b5563' }}>
-                Stock: {stock}
-              </div>
+              <div style={{ color: '#4b5563' }}>Stock: {stock}</div>
             )}
           </div>
         </div>
