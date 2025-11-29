@@ -95,6 +95,21 @@ export default function NewProductPage() {
     }
   }
 
+  const inputStyle: React.CSSProperties = {
+    width: '100%',
+    padding: '0.5rem',
+    backgroundColor: '#020617',
+    color: '#e5e7eb',
+    border: '1px solid #1f2937',
+    borderRadius: 6,
+  };
+
+  const labelStyle: React.CSSProperties = {
+    display: 'block',
+    fontWeight: 'bold',
+    marginBottom: 4,
+  };
+
   return (
     <div style={{ maxWidth: 900, margin: '0 auto', padding: '2rem' }}>
       <h1 style={{ fontSize: '1.8rem', marginBottom: '1rem' }}>Nuevo Funko</h1>
@@ -111,53 +126,33 @@ export default function NewProductPage() {
         <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
           {/* Imagen */}
           <div>
-            <label
-              style={{
-                display: 'block',
-                fontWeight: 'bold',
-                marginBottom: 4,
-              }}
-            >
-              Imagen del Funko (PNG/JPG)
-            </label>
+            <label style={labelStyle}>Imagen del Funko (PNG/JPG)</label>
             <input
               type="file"
               accept="image/png, image/jpeg"
               onChange={handleImageChange}
+              style={{
+                ...inputStyle,
+                cursor: 'pointer',
+              }}
             />
           </div>
 
           {/* Datos básicos */}
           <div>
-            <label
-              style={{
-                display: 'block',
-                fontWeight: 'bold',
-                marginBottom: 4,
-              }}
-            >
-              Nombre
-            </label>
+            <label style={labelStyle}>Nombre</label>
             <input
               type="text"
               value={name}
               onChange={(e) => setName(e.target.value)}
               placeholder="Ej: Luffy Gear 5"
-              style={{ width: '100%', padding: '0.5rem' }}
+              style={inputStyle}
             />
           </div>
 
           <div style={{ display: 'flex', gap: '1rem' }}>
             <div style={{ flex: 1 }}>
-              <label
-                style={{
-                  display: 'block',
-                  fontWeight: 'bold',
-                  marginBottom: 4,
-                }}
-              >
-                Precio (venta)
-              </label>
+              <label style={labelStyle}>Precio (venta)</label>
               <input
                 type="number"
                 value={price}
@@ -165,20 +160,12 @@ export default function NewProductPage() {
                   setPrice(e.target.value ? Number(e.target.value) : '')
                 }
                 placeholder="Ej: 120000"
-                style={{ width: '100%', padding: '0.5rem' }}
+                style={inputStyle}
               />
             </div>
 
             <div style={{ flex: 1 }}>
-              <label
-                style={{
-                  display: 'block',
-                  fontWeight: 'bold',
-                  marginBottom: 4,
-                }}
-              >
-                Costo (opcional)
-              </label>
+              <label style={labelStyle}>Costo (opcional)</label>
               <input
                 type="number"
                 value={cost}
@@ -186,20 +173,12 @@ export default function NewProductPage() {
                   setCost(e.target.value ? Number(e.target.value) : '')
                 }
                 placeholder="Ej: 80000"
-                style={{ width: '100%', padding: '0.5rem' }}
+                style={inputStyle}
               />
             </div>
 
             <div style={{ flex: 1 }}>
-              <label
-                style={{
-                  display: 'block',
-                  fontWeight: 'bold',
-                  marginBottom: 4,
-                }}
-              >
-                Stock
-              </label>
+              <label style={labelStyle}>Stock</label>
               <input
                 type="number"
                 value={stock}
@@ -207,73 +186,58 @@ export default function NewProductPage() {
                   setStock(e.target.value ? Number(e.target.value) : '')
                 }
                 placeholder="Ej: 5"
-                style={{ width: '100%', padding: '0.5rem' }}
+                style={inputStyle}
               />
             </div>
           </div>
 
           {/* Clasificación */}
           <div>
-            <label
-              style={{
-                display: 'block',
-                fontWeight: 'bold',
-                marginBottom: 4,
-              }}
-            >
-              Categoría
-            </label>
+            <label style={labelStyle}>Categoría</label>
             <input
               type="text"
               value={category}
               onChange={(e) => setCategory(e.target.value)}
               placeholder="Ej: Funko Pop, Keychain..."
-              style={{ width: '100%', padding: '0.5rem' }}
+              style={inputStyle}
             />
           </div>
 
           {/* Descripción */}
           <div>
-            <label
-              style={{
-                display: 'block',
-                fontWeight: 'bold',
-                marginBottom: 4,
-              }}
-            >
-              Descripción
-            </label>
+            <label style={labelStyle}>Descripción</label>
             <textarea
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               placeholder="Detalles del Funko (condición, edición, etc.)"
               rows={4}
-              style={{ width: '100%', padding: '0.5rem', resize: 'vertical' }}
+              style={{
+                ...inputStyle,
+                resize: 'vertical',
+              }}
             />
           </div>
 
           {/* Plantilla (por ahora fija) */}
           <div>
-            <label
-              style={{
-                display: 'block',
-                fontWeight: 'bold',
-                marginBottom: 4,
-              }}
-            >
-              Plantilla
-            </label>
+            <label style={labelStyle}>Plantilla</label>
             <input
               type="text"
               value="default"
               disabled
               style={{
-                width: '100%',
-                padding: '0.5rem',
-                backgroundColor: '#f3f3f3',
+                ...inputStyle,
+                color: '#9ca3af',
+                borderStyle: 'dashed',
+                borderColor: '#4b5563',
               }}
             />
-            <small style={{ color: '#666' }}>
+            <small
+              style={{
+                color: '#9ca3af',
+                fontSize: '0.75rem',
+              }}
+            >
               Por ahora solo usamos la plantilla “default”. Más adelante
               agregamos más opciones.
             </small>
@@ -281,7 +245,17 @@ export default function NewProductPage() {
 
           {/* Mensaje y botón */}
           {message && (
-            <div style={{ marginTop: '0.5rem', color: '#444' }}>{message}</div>
+            <div
+              style={{
+                marginTop: '0.5rem',
+                fontSize: '0.85rem',
+                color: message.includes('correctamente')
+                  ? '#22c55e'
+                  : '#f97316',
+              }}
+            >
+              {message}
+            </div>
           )}
 
           <button
@@ -346,7 +320,7 @@ export default function NewProductPage() {
                 }}
               />
             ) : (
-              <span style={{ color: '#6b7280', zIndex: 1 }}>
+              <span style={{ color: '#e5e7eb', zIndex: 1 }}>
                 Sube una imagen para verla aquí
               </span>
             )}
