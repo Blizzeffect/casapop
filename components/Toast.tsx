@@ -14,7 +14,7 @@ export default function Toast({ message, product, isVisible, onClose, onViewCart
         if (isVisible) {
             const timer = setTimeout(() => {
                 onClose();
-            }, 5000); // Increased time to allow interaction
+            }, 5000);
             return () => clearTimeout(timer);
         }
     }, [isVisible, onClose]);
@@ -22,57 +22,75 @@ export default function Toast({ message, product, isVisible, onClose, onViewCart
     if (!isVisible) return null;
 
     return (
-        <div className="fixed bottom-4 right-4 z-50 animate-slide-up">
-            <div
-                className="bg-black/95 border-2 border-green-500 p-4 rounded-lg shadow-[0_0_20px_rgba(34,197,94,0.3)] max-w-sm"
-                style={{ backdropFilter: 'blur(8px)' }}
-            >
-                <div className="flex items-start gap-4 mb-3">
-                    {product && (
-                        <div className="w-12 h-12 bg-white/10 rounded overflow-hidden flex-shrink-0">
-                            <img
-                                src={product.image_url}
-                                alt={product.name}
-                                className="w-full h-full object-contain"
-                            />
-                        </div>
-                    )}
-                    <div className="flex-1">
-                        <h4 className="text-green-400 font-mono font-bold text-sm flex items-center gap-2">
-                            <span>✓</span> {message}
-                        </h4>
-                        {product && (
-                            <p className="text-gray-300 text-xs truncate max-w-[200px] mt-1">
-                                {product.name}
-                            </p>
-                        )}
-                    </div>
-                    <button
-                        onClick={onClose}
-                        className="text-gray-500 hover:text-white transition-colors -mt-1 -mr-1"
-                    >
-                        ✕
-                    </button>
-                </div>
+        <>
+            <style jsx>{`
+        @keyframes slideDown {
+          from { transform: translateY(-100%); }
+          to { transform: translateY(0); }
+        }
+        .animate-slide-down {
+          animation: slideDown 0.3s ease-out forwards;
+        }
+      `}</style>
+            <div className="fixed top-0 left-0 w-full z-50 animate-slide-down">
+                <div
+                    className="bg-black/95 border-b-2 border-green-500 shadow-[0_0_20px_rgba(34,197,94,0.3)]"
+                    style={{ backdropFilter: 'blur(8px)' }}
+                >
+                    <div className="max-w-7xl mx-auto p-4 flex flex-col sm:flex-row items-center justify-between gap-4">
 
-                <div className="flex gap-2 mt-2">
-                    <button
-                        onClick={() => {
-                            onViewCart();
-                            onClose();
-                        }}
-                        className="flex-1 bg-yellow-400 text-black text-xs font-bold py-2 px-3 rounded hover:bg-yellow-300 transition-colors font-mono"
-                    >
-                        VER CARRITO
-                    </button>
-                    <button
-                        onClick={onClose}
-                        className="flex-1 border border-gray-600 text-gray-300 text-xs py-2 px-3 rounded hover:border-gray-400 hover:text-white transition-colors font-mono"
-                    >
-                        SEGUIR COMPRANDO
-                    </button>
+                        {/* Left Side: Message & Product */}
+                        <div className="flex items-center gap-4 w-full sm:w-auto">
+                            {product && (
+                                <div className="w-12 h-12 bg-white/10 rounded overflow-hidden flex-shrink-0">
+                                    <img
+                                        src={product.image_url}
+                                        alt={product.name}
+                                        className="w-full h-full object-contain"
+                                    />
+                                </div>
+                            )}
+                            <div className="flex-1">
+                                <h4 className="text-green-400 font-mono font-bold text-sm flex items-center gap-2">
+                                    <span className="bg-green-500 text-black rounded-full w-5 h-5 flex items-center justify-center text-xs">✓</span>
+                                    {message}
+                                </h4>
+                                {product && (
+                                    <p className="text-gray-300 text-xs truncate max-w-[200px] sm:max-w-md mt-1">
+                                        {product.name}
+                                    </p>
+                                )}
+                            </div>
+                        </div>
+
+                        {/* Right Side: Actions */}
+                        <div className="flex items-center gap-3 w-full sm:w-auto">
+                            <button
+                                onClick={() => {
+                                    onViewCart();
+                                    onClose();
+                                }}
+                                className="flex-1 sm:flex-none bg-yellow-400 text-black text-sm font-bold py-2 px-6 rounded hover:bg-yellow-300 transition-colors font-mono whitespace-nowrap"
+                            >
+                                VER CARRITO
+                            </button>
+                            <button
+                                onClick={onClose}
+                                className="flex-1 sm:flex-none border border-gray-600 text-gray-300 text-sm py-2 px-4 rounded hover:border-gray-400 hover:text-white transition-colors font-mono whitespace-nowrap"
+                            >
+                                SEGUIR COMPRANDO
+                            </button>
+                            <button
+                                onClick={onClose}
+                                className="text-gray-500 hover:text-white transition-colors p-2"
+                            >
+                                ✕
+                            </button>
+                        </div>
+
+                    </div>
                 </div>
             </div>
-        </div>
+        </>
     );
 }
