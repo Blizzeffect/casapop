@@ -47,9 +47,17 @@ export default function ProductGrid({ products, onAddToCart }: ProductGridProps)
                 />
               </div>
 
-              {product.stock <= 1 && (
+              {product.stock <= 1 && product.stock > 0 && (
                 <div className="absolute top-2 right-2 bg-red-600 text-white px-2 py-1 text-xs font-mono">
                   ÚLTIMO
+                </div>
+              )}
+
+              {product.stock === 0 && (
+                <div className="absolute inset-0 bg-black/60 flex items-center justify-center z-10">
+                  <div className="bg-red-600 text-white px-4 py-2 font-mono font-bold border-2 border-white transform -rotate-12">
+                    AGOTADO
+                  </div>
                 </div>
               )}
             </div>

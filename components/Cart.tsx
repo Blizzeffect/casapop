@@ -1,27 +1,33 @@
 'use client';
 
 import { supabase } from '@/lib/supabase';
-import { CartItem } from '@/types';
+import { CartItem, Product } from '@/types';
 
 interface CartProps {
   items: CartItem[];
   onRemoveItem: (cartId: string) => void;
+  onAddItem: (product: Product) => void;
 }
 
-export default function Cart({ items, onRemoveItem }: CartProps) {
+export default function Cart({ items, onRemoveItem, onAddItem }: CartProps) {
   const total = items.reduce((sum: number, item: CartItem) => sum + item.price, 0);
 
-  const quantities: Record<number, number> = items.reduce(
-    (acc: Record<number, number>, item: CartItem) => {
-      acc[item.id] = (acc[item.id] || 0) + 1;
-      return acc;
-    },
-    {}
-  );
+  // Agrupar items por ID de producto
+  const groupedItems = items.reduce((acc: Record<number, CartItem[]>, item: CartItem) => {
+    if (!acc[item.id]) {
+      acc[item.id] = [];
+    }
+    acc[item.id].push(item);
+    return acc;
+  }, {});
 
-  const hasOverStock = items.some(
-    (item: CartItem) => quantities[item.id] > item.stock
-  );
+  const uniqueItemIds = Object.keys(groupedItems).map(Number);
+
+  const hasOverStock = uniqueItemIds.some((id) => {
+    const quantity = groupedItems[id].length;
+    const stock = groupedItems[id][0].stock;
+    return quantity > stock;
+  });
 
   async function createOrderAndPay() {
     if (items.length === 0) return;
@@ -29,12 +35,19 @@ export default function Cart({ items, onRemoveItem }: CartProps) {
 
     const reference = `casafunko-${crypto.randomUUID()}`;
 
-    const orderItems = items.map((item: CartItem) => ({
-      product_id: item.id,
-      name: item.name,
-      price: item.price,
-      qty: 1,
-    }));
+    // Para la orden, enviamos items agrupados o individuales?
+    // MercadoPago prefiere items individuales o agrupados con qty.
+    // Vamos a agruparlos para MP también.
+    const orderItems = uniqueItemIds.map((id) => {
+      const group = groupedItems[id];
+      const item = group[0];
+      return {
+        product_id: item.id,
+        name: item.name,
+        price: item.price,
+        qty: group.length,
+      };
+    });
 
     const { error } = await supabase.from('orders').insert([
       {
@@ -91,36 +104,50 @@ export default function Cart({ items, onRemoveItem }: CartProps) {
             Carrito vacío
           </p>
         ) : (
-          items.map((item: CartItem) => {
-            const qty = quantities[item.id] || 1;
-            const outOfStock = qty >= item.stock;
+          uniqueItemIds.map((id) => {
+            const group = groupedItems[id];
+            const item = group[0];
+            const qty = group.length;
+            const outOfStock = qty > item.stock;
 
             return (
               <div
-                key={item.cartId}
+                key={item.id}
                 className="p-2 border-l-2 border-cyan-500 pl-3 bg-black/50 text-sm font-mono"
               >
                 <div className="flex justify-between items-start">
-                  <div>
+                  <div className="flex-1">
                     <p className="text-cyan-300 truncate">{item.name}</p>
                     <p className="text-yellow-400">
-                      ${item.price.toLocaleString('es-CO')}
+                      ${(item.price * qty).toLocaleString('es-CO')}
                     </p>
-                    <p className="text-xs text-cyan-400/70">
-                      Cantidad: {qty} / Stock: {item.stock}
-                    </p>
+
+                    <div className="flex items-center gap-2 mt-2">
+                      <button
+                        onClick={() => onRemoveItem(group[0].cartId)}
+                        className="w-6 h-6 flex items-center justify-center border border-cyan-500 text-cyan-500 hover:bg-cyan-500/20"
+                      >
+                        -
+                      </button>
+                      <span className="text-white w-4 text-center">{qty}</span>
+                      <button
+                        onClick={() => onAddItem(item)}
+                        disabled={qty >= item.stock}
+                        className="w-6 h-6 flex items-center justify-center border border-cyan-500 text-cyan-500 hover:bg-cyan-500/20 disabled:opacity-30 disabled:cursor-not-allowed"
+                      >
+                        +
+                      </button>
+                      <span className="text-xs text-cyan-400/70 ml-2">
+                        Stock: {item.stock}
+                      </span>
+                    </div>
+
                     {outOfStock && (
                       <p className="text-[10px] text-red-400 mt-1">
-                        Alcanzaste el stock máximo de este Funko.
+                        Stock insuficiente (Max: {item.stock})
                       </p>
                     )}
                   </div>
-                  <button
-                    onClick={() => onRemoveItem(item.cartId)}
-                    className="text-red-500 hover:text-red-400 text-xs"
-                  >
-                    ✕
-                  </button>
                 </div>
               </div>
             );

@@ -123,7 +123,7 @@ export default function Home() {
                   [X] CERRAR
                 </button>
               </div>
-              <Cart items={cartItems} onRemoveItem={removeFromCart} />
+              <Cart items={cartItems} onRemoveItem={removeFromCart} onAddItem={addToCart} />
             </div>
           </div>
         )}
