@@ -237,9 +237,9 @@ export default function BlogPage() {
                                         <span>⏱️ {post.reading_time}</span>
                                         <time>{new Date(post.published_at).toLocaleDateString('es-CO', { day: 'numeric', month: 'short' })}</time>
                                     </div>
-                                    <div className="text-magenta font-bold group-hover:text-cyan transition-colors">
+                                    <a href={`/blog/${post.slug}`} className="text-magenta font-bold group-hover:text-cyan transition-colors">
                                         → Leer Artículo
-                                    </div>
+                                    </a>
                                 </div>
                             ))
                         ) : (
