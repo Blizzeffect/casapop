@@ -1,5 +1,5 @@
 import { env } from '@/lib/env';
-import { Product } from '@/types';
+import { Product, CartItem } from '@/types';
 
 const TEMPLATE_BACKGROUND_URLS: Record<string, string> = {
   default: env.NEXT_PUBLIC_SUPABASE_STORAGE_URL,
@@ -7,10 +7,12 @@ const TEMPLATE_BACKGROUND_URLS: Record<string, string> = {
 
 interface ProductGridProps {
   products: Product[];
+  cartItems: CartItem[];
   onAddToCart: (product: Product) => void;
+  onRemoveItem: (cartId: string) => void;
 }
 
-export default function ProductGrid({ products, onAddToCart }: ProductGridProps) {
+export default function ProductGrid({ products, cartItems, onAddToCart, onRemoveItem }: ProductGridProps) {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 py-8">
       {products.map((product: Product) => {
@@ -18,6 +20,11 @@ export default function ProductGrid({ products, onAddToCart }: ProductGridProps)
         const bgUrl =
           TEMPLATE_BACKGROUND_URLS[templateKey] ||
           TEMPLATE_BACKGROUND_URLS.default;
+
+        // Calcular cantidad en carrito
+        const productInCart = cartItems.filter((item) => item.id === product.id);
+        const qtyInCart = productInCart.length;
+        const isMaxStock = qtyInCart >= product.stock;
 
         return (
           <div
@@ -82,19 +89,40 @@ export default function ProductGrid({ products, onAddToCart }: ProductGridProps)
                 </div>
               </div>
 
-              <button
-                onClick={() => onAddToCart(product)}
-                disabled={product.stock === 0}
-                className="w-full py-2 border-2 border-yellow-400 bg-black text-yellow-400 font-mono hover:bg-yellow-400/10 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
-                style={{
-                  boxShadow:
-                    product.stock > 0
-                      ? '0 0 10px rgba(255, 255, 0, 0.3)'
-                      : 'none',
-                }}
-              >
-                {product.stock > 0 ? '>> COMPRAR' : 'AGOTADO'}
-              </button>
+              {qtyInCart > 0 ? (
+                <div className="flex items-center justify-between border-2 border-cyan-500 bg-black/50 p-1">
+                  <button
+                    onClick={() => onRemoveItem(productInCart[0].cartId)}
+                    className="w-8 h-8 flex items-center justify-center text-cyan-500 hover:bg-cyan-500/20 font-bold transition-colors"
+                  >
+                    -
+                  </button>
+                  <span className="text-yellow-400 font-mono font-bold">
+                    {qtyInCart}
+                  </span>
+                  <button
+                    onClick={() => onAddToCart(product)}
+                    disabled={isMaxStock}
+                    className="w-8 h-8 flex items-center justify-center text-cyan-500 hover:bg-cyan-500/20 font-bold transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
+                  >
+                    +
+                  </button>
+                </div>
+              ) : (
+                <button
+                  onClick={() => onAddToCart(product)}
+                  disabled={product.stock === 0}
+                  className="w-full py-2 border-2 border-yellow-400 bg-black text-yellow-400 font-mono hover:bg-yellow-400/10 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+                  style={{
+                    boxShadow:
+                      product.stock > 0
+                        ? '0 0 10px rgba(255, 255, 0, 0.3)'
+                        : 'none',
+                  }}
+                >
+                  {product.stock > 0 ? '>> COMPRAR' : 'AGOTADO'}
+                </button>
+              )}
             </div>
           </div>
         );

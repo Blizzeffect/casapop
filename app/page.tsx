@@ -107,7 +107,12 @@ export default function Home() {
       <div className="flex gap-8 max-w-7xl mx-auto p-4">
         {/* GRID PRINCIPAL */}
         <div className="flex-1">
-          <ProductGrid products={products} onAddToCart={addToCart} />
+          <ProductGrid
+            products={products}
+            cartItems={cartItems}
+            onAddToCart={addToCart}
+            onRemoveItem={removeFromCart}
+          />
         </div>
 
         {/* CARRITO SIDEBAR */}
