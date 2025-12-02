@@ -8,18 +8,30 @@ Una plataforma de comercio electrónico moderna con estética **Vaporwave/Retro-
 
 ### 🛒 Tienda Pública
 - **Catálogo Visual**: Diseño inmersivo con colores neón (Magenta/Cyan) y modo oscuro.
-- **Carrito de Compras**: Funcionalidad completa de carrito persistente.
+- **Filtros Avanzados**: Búsqueda por precio, categoría y rareza.
+- **Wishlist (Favoritos)**: Guarda productos para después (Local Storage).
+- **Pre-ordenes**: Sistema curado para reservar lanzamientos futuros.
+- **Carrito Inteligente**:
+  - Cálculo de envío (Local vs Nacional).
+  - Recolección de datos de envío (Nombre, Dirección, Ciudad).
+  - Validación de stock y pre-ordenes.
 - **Blog**: Sección de artículos para la comunidad.
-- **Diseño Responsivo**: Optimizado para móviles y escritorio.
+- **Soporte**: Sistema de tickets para atención al cliente.
 
 ### 🔐 Panel de Administración (`/admin`)
-- **Dashboard Unificado**: Acceso centralizado a productos y blog.
+- **Dashboard Unificado**: Acceso centralizado a productos, pedidos, tickets y blog.
 - **Gestión de Productos**:
-  - Crear nuevos productos con imágenes.
-  - **Edición Completa**: Modificar precio, stock, nombre e imágenes.
-  - **Borrado Masivo**: Eliminar múltiples productos a la vez con confirmación de seguridad.
-- **Gestión de Blog**: Crear y editar artículos con editor de texto enriquecido.
-- **Seguridad**: Protección de rutas y acciones mediante Supabase RLS.
+  - Crear, editar y eliminar productos.
+  - Gestión de **Pre-ordenes** y fechas de lanzamiento.
+  - Borrado masivo seguro.
+- **Gestión de Pedidos**:
+  - Ver detalles completos (incluyendo datos del cliente).
+  - Actualizar estados (Pendiente, Enviado, Entregado).
+  - Guardar números de guía.
+- **Soporte (Tickets)**:
+  - Ver y resolver dudas de clientes.
+- **Gestión de Blog**: Crear y editar artículos.
+- **Seguridad**: Protección total con autenticación Supabase.
 
 ## 🛠️ Stack Tecnológico
 
@@ -63,8 +75,10 @@ Una plataforma de comercio electrónico moderna con estética **Vaporwave/Retro-
 
 El proyecto requiere dos tablas principales: `products` y `posts`. Asegúrate de aplicar las políticas RLS (Row Level Security) incluidas en la carpeta `supabase/` para garantizar la seguridad.
 
-- `supabase/products.sql`: Definición y políticas para productos.
+- `supabase/products.sql`: Definición y políticas para productos y pedidos.
 - `supabase/posts.sql`: Definición y políticas para el blog.
+- `supabase/tickets.sql`: Sistema de soporte.
+- `supabase/migrations/`: Migraciones para nuevas funcionalidades (Pre-ordenes, Datos de Cliente).
 
 ## 🎨 Estética
 
