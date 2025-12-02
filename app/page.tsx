@@ -1,12 +1,3 @@
-'use client';
-
-import { useEffect, useState } from 'react';
-import { supabase } from '@/lib/supabase';
-import ProductGrid from '@/components/ProductGrid';
-import Cart from '@/components/Cart';
-import { Product, CartItem } from '@/types';
-import Toast from '@/components/Toast';
-import Image from 'next/image';
 
 'use client';
 
