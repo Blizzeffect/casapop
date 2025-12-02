@@ -16,10 +16,13 @@ export default function ProductsAdminPage() {
 
     async function fetchProducts() {
         setLoading(true);
-        const { data } = await supabase
+        const { data, error } = await supabase
             .from('products')
-            .select('*')
-            .order('created_at', { ascending: false });
+            .select('*');
+
+        if (error) {
+            console.error('Error fetching products:', error);
+        }
 
         if (data) setProducts(data);
         setLoading(false);
@@ -85,8 +88,8 @@ export default function ProductsAdminPage() {
                                     </td>
                                     <td className="p-4">
                                         <span className={`px-2 py-1 rounded-full text-xs border ${product.stock > 0
-                                                ? 'bg-green-500/10 text-green-500 border-green-500/20'
-                                                : 'bg-red-500/10 text-red-500 border-red-500/20'
+                                            ? 'bg-green-500/10 text-green-500 border-green-500/20'
+                                            : 'bg-red-500/10 text-red-500 border-red-500/20'
                                             }`}>
                                             {product.stock} un.
                                         </span>
