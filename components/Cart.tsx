@@ -136,7 +136,7 @@ export default function Cart({ items, onRemoveItem, onAddItem }: CartProps) {
         items: finalItems,
         status: 'pending',
         courier: selectedCourier.name,
-        customer_details: customerDetails,
+        // customer_details: customerDetails, // Testing if this is the cause
       };
 
       console.log('Sending payload to Supabase:', payload);
