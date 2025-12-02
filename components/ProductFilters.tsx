@@ -104,7 +104,7 @@ export default function ProductFilters({ onFilterChange, categories }: ProductFi
             {/* Reset Button */}
             <button
                 onClick={() => {
-                    const reset = { minPrice: '', maxPrice: '', category: '', rarity: '', search: '' };
+                    const reset: FilterState = { minPrice: '', maxPrice: '', category: '', rarity: '', search: '' };
                     setFilters(reset);
                     onFilterChange(reset);
                 }}
