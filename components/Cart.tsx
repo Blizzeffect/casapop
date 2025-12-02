@@ -130,16 +130,18 @@ export default function Cart({ items, onRemoveItem, onAddItem }: CartProps) {
     ];
 
     try {
-      const { error } = await supabase.from('orders').insert([
-        {
-          reference,
-          total_amount: total,
-          items: finalItems,
-          status: 'pending',
-          courier: selectedCourier.name,
-          customer_details: customerDetails,
-        },
-      ]);
+      const payload = {
+        reference,
+        total_amount: total,
+        items: finalItems,
+        status: 'pending',
+        courier: selectedCourier.name,
+        customer_details: customerDetails,
+      };
+
+      console.log('Sending payload to Supabase:', payload);
+
+      const { error } = await supabase.from('orders').insert([payload]);
 
       if (error) {
         console.error('Supabase Error:', error);
