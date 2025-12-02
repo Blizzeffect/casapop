@@ -23,10 +23,13 @@ export interface OrderItem {
 
 export interface Order {
   id: number;
-  mp_preference_id: string;
-  items: CartItem[];
+  reference: string;
+  mp_preference_id?: string;
+  items: CartItem[]; // Or a specific OrderItem type if structure differs
   total_amount: number;
-  status: string;
+  status: 'pending' | 'paid' | 'shipped' | 'delivered' | 'cancelled';
+  tracking_number?: string;
+  courier?: string;
   created_at: string;
 }
 

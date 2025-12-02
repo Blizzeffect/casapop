@@ -21,6 +21,19 @@ export default function AdminDashboard() {
                     <p className="text-gray-400">Administra el inventario, precios y stock de tus Funkos.</p>
                 </Link>
 
+                {/* Orders Card */}
+                <Link
+                    href="/admin/orders"
+                    className="group p-8 bg-dark-2 border border-gray-800 rounded-2xl hover:border-green-400/50 transition shadow-lg hover:shadow-[0_0_30px_rgba(74,222,128,0.1)]"
+                >
+                    <div className="flex justify-between items-start mb-4">
+                        <span className="text-4xl bg-green-400/10 p-3 rounded-xl border border-green-400/20">🚚</span>
+                        <span className="text-gray-500 group-hover:text-green-400 transition">Ver todo →</span>
+                    </div>
+                    <h2 className="text-2xl font-bold text-white mb-2">Pedidos</h2>
+                    <p className="text-gray-400">Gestiona envíos, estados y guías de rastreo.</p>
+                </Link>
+
                 {/* Blog Card */}
                 <Link
                     href="/admin/blog"
