@@ -18,16 +18,29 @@ export default function BlogPage() {
     const [scrolled, setScrolled] = useState(0);
     const [navbarBg, setNavbarBg] = useState(false);
 
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
+
     // Fetch Products & Posts
     useEffect(() => {
         const fetchData = async () => {
-            // Products
-            const { data: productsData } = await supabase.from('products').select('*').limit(4);
-            if (productsData) setProducts(productsData);
+            try {
+                setLoading(true);
+                // Products
+                const { data: productsData, error: productsError } = await supabase.from('products').select('*').limit(4);
+                if (productsError) throw productsError;
+                if (productsData) setProducts(productsData);
 
-            // Posts
-            const { data: postsData } = await supabase.from('posts').select('*').order('published_at', { ascending: false });
-            if (postsData) setPosts(postsData);
+                // Posts
+                const { data: postsData, error: postsError } = await supabase.from('posts').select('*').order('published_at', { ascending: false });
+                if (postsError) throw postsError;
+                if (postsData) setPosts(postsData);
+            } catch (err: any) {
+                console.error('Error fetching data:', err);
+                setError(err.message);
+            } finally {
+                setLoading(false);
+            }
         };
         fetchData();
     }, []);
@@ -215,7 +228,16 @@ export default function BlogPage() {
 
                     <div className="grid md:grid-cols-3 gap-8 mb-12">
 
-                        {posts.length > 0 ? (
+                        {loading ? (
+                            <div className="col-span-3 text-center text-gray-500 py-12 animate-pulse">
+                                <p className="text-xl">Cargando artículos...</p>
+                            </div>
+                        ) : error ? (
+                            <div className="col-span-3 text-center text-red-500 py-12">
+                                <p className="text-xl mb-2">Error al cargar artículos 😕</p>
+                                <p className="text-sm opacity-80">{error}</p>
+                            </div>
+                        ) : posts.length > 0 ? (
                             posts.map((post) => (
                                 <Link href={`/blog/${post.slug}`} key={post.id} className="bg-dark-2 rounded-xl p-6 shadow-lg hover:-translate-y-1 hover:shadow-[0_8px_32px_rgba(255,0,110,0.2)] transition-all cursor-pointer group block">
                                     <div className="relative h-48 mb-4 overflow-hidden rounded-lg bg-dark">
@@ -252,7 +274,7 @@ export default function BlogPage() {
                             ))
                         ) : (
                             <div className="col-span-3 text-center text-gray-500 py-12">
-                                <p>Cargando artículos...</p>
+                                <p>No hay artículos publicados aún.</p>
                             </div>
                         )}
 

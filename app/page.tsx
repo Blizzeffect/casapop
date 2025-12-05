@@ -199,14 +199,14 @@ export default function Home() {
       {/* HERO SECTION */}
       <section className="relative w-full h-[70vh] flex items-center justify-center overflow-hidden pt-20">
         <div className="absolute inset-0 z-0">
-          <div
-            className="w-full h-full bg-gradient-to-br from-magenta/20 via-purple/10 to-cyan/20"
-            style={{
-              backgroundImage: 'url("data:image/svg+xml,%3Csvg width=%22100%22 height=%22100%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Ccircle cx=%2250%22 cy=%2250%22 r=%2240%22 fill=%22%23FF006E%22 opacity=%220.05%22/%3E%3C/svg%3E")',
-              backgroundSize: '100px 100px'
-            }}
+          <Image
+            src="/hero-bg.jpg"
+            alt="Hero Background"
+            fill
+            className="object-cover opacity-60"
+            priority
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-dark/50 via-dark/30 to-dark/70" />
+          <div className="absolute inset-0 bg-gradient-to-b from-dark/80 via-dark/40 to-dark/90" />
         </div>
 
         <div className="relative z-10 max-w-7xl mx-auto px-4 text-center w-full">
