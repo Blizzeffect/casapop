@@ -139,7 +139,7 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
           {/* Logo */}
           <a href="#" className="flex items-center gap-2 group">
-            <div className="relative w-16 h-16 group-hover:scale-105 transition-transform">
+            <div className="relative w-24 h-24 group-hover:scale-105 transition-transform">
               <Image
                 src="/logo.png"
                 alt="Casa Funko Colombia"
@@ -227,6 +227,11 @@ export default function Home() {
               Ver Catálogo
             </a>
           </div>
+        </div>
+
+        {/* Scroll Indicator */}
+        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-10 animate-pulse">
+          <div className="text-cyan text-2xl">↓</div>
         </div>
       </section>
 

@@ -78,7 +78,7 @@ export default function BlogPage() {
                     {/* Logo */}
                     {/* Logo */}
                     <a href="/" className="flex items-center gap-2 group">
-                        <div className="relative w-16 h-16 group-hover:scale-105 transition-transform">
+                        <div className="relative w-24 h-24 group-hover:scale-105 transition-transform">
                             <Image
                                 src="/logo.png"
                                 alt="Casa Funko Colombia"
