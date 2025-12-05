@@ -79,14 +79,22 @@ export default function TicketsAdminPage() {
                                         <p className="text-cyan text-sm">{ticket.email}</p>
                                     </div>
 
-                                    {ticket.status === 'open' && (
-                                        <button
-                                            onClick={() => resolveTicket(ticket.id)}
-                                            className="px-4 py-2 bg-green-600 text-white rounded-lg font-bold text-sm hover:bg-green-500 transition"
+                                    <div className="flex gap-2">
+                                        <a
+                                            href={`mailto:${ticket.email}?subject=Re: ${ticket.subject}`}
+                                            className="px-4 py-2 bg-blue-600 text-white rounded-lg font-bold text-sm hover:bg-blue-500 transition flex items-center gap-2"
                                         >
-                                            Marcar Resuelto
-                                        </button>
-                                    )}
+                                            <span>📧</span> Responder
+                                        </a>
+                                        {ticket.status === 'open' && (
+                                            <button
+                                                onClick={() => resolveTicket(ticket.id)}
+                                                className="px-4 py-2 bg-green-600 text-white rounded-lg font-bold text-sm hover:bg-green-500 transition"
+                                            >
+                                                Marcar Resuelto
+                                            </button>
+                                        )}
+                                    </div>
                                 </div>
 
                                 <p className="text-gray-300 bg-black/30 p-4 rounded-lg border border-gray-700">
