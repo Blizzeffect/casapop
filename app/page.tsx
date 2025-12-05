@@ -157,7 +157,7 @@ export default function Home() {
             <a href="/wishlist" className="text-gray-300 hover:text-magenta transition flex items-center gap-1">
               <span>❤️</span> Favoritos
             </a>
-            <a href="#contact" className="text-gray-300 hover:text-cyan transition">Contacto</a>
+            <a href="/support" className="text-gray-300 hover:text-cyan transition">Contacto</a>
           </div>
 
           {/* CTA + Cart */}
