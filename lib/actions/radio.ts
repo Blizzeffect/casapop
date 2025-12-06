@@ -8,10 +8,10 @@ export async function uploadTrack(formData: FormData) {
 
     const title = formData.get('title') as string;
     const artist = formData.get('artist') as string || 'Unknown Artist';
-    const file = formData.get('file') as File;
+    const image = formData.get('image') as File | null;
 
     if (!file || !title) {
-        return { error: 'Falta el archivo o el título' };
+        return { error: 'Falta el archivo de audio o el título' };
     }
 
     // Verify auth
@@ -20,7 +20,7 @@ export async function uploadTrack(formData: FormData) {
         return { error: 'Unauthorized' };
     }
 
-    // Upload to Storage
+    // Upload Audio to Music Folder
     const fileExt = file.name.split('.').pop();
     const fileName = `${Date.now()}_${Math.random().toString(36).substring(7)}.${fileExt}`;
     const filePath = `tracks/${fileName}`;
@@ -34,7 +34,26 @@ export async function uploadTrack(formData: FormData) {
         return { error: 'Error subiendo el archivo de audio' };
     }
 
-    // Get Public URL
+    // Upload Image if provided
+    let imageUrl = null;
+    if (image && image.size > 0) {
+        const imgExt = image.name.split('.').pop();
+        const imgName = `art_${Date.now()}_${Math.random().toString(36).substring(7)}.${imgExt}`;
+        const imgPath = `art/${imgName}`;
+
+        const { error: imgUploadError } = await supabase.storage
+            .from('radio_music')
+            .upload(imgPath, image);
+
+        if (!imgUploadError) {
+            const { data: imgUrlData } = supabase.storage
+                .from('radio_music')
+                .getPublicUrl(imgPath);
+            imageUrl = imgUrlData.publicUrl;
+        }
+    }
+
+    // Get Public URL for Audio
     const { data: publicUrlData } = supabase.storage
         .from('radio_music')
         .getPublicUrl(filePath);
@@ -48,6 +67,7 @@ export async function uploadTrack(formData: FormData) {
             title,
             artist,
             file_url: fileUrl,
+            image_url: imageUrl,
             is_active: true
         });
 
