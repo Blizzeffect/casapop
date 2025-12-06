@@ -9,6 +9,7 @@ export async function uploadTrack(formData: FormData) {
     const title = formData.get('title') as string;
     const artist = formData.get('artist') as string || 'Unknown Artist';
     const image = formData.get('image') as File | null;
+    const file = formData.get('file') as File;
 
     if (!file || !title) {
         return { error: 'Falta el archivo de audio o el título' };
