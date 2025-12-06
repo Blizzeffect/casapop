@@ -3,8 +3,18 @@
 import { createClient } from '@/utils/supabase/server';
 import { revalidatePath } from 'next/cache';
 
+const PROFANITY_LIST = [
+    'badword', 'spam', 'viagra', 'casino', 'xxx', 'porn', 'sex', 'idiot', 'stupid', 'hate'
+    // Add real profanity list here. This is a basic example.
+];
+
+function containsProfanity(text: string): boolean {
+    const lowerText = text.toLowerCase();
+    return PROFANITY_LIST.some(word => lowerText.includes(word));
+}
+
 export async function postMessage(formData: FormData) {
-    const supabase = createClient();
+    const supabase = await createClient(); // Await client creation
 
     const nickname = formData.get('nickname') as string;
     const email = formData.get('email') as string;
@@ -15,12 +25,15 @@ export async function postMessage(formData: FormData) {
         return { error: 'Todos los campos son obligatorios' };
     }
 
-    const { error } = await (await supabase).from('community_messages').insert({
+    const isSuspicious = containsProfanity(message) || containsProfanity(nickname);
+    const isApproved = !isSuspicious; // Auto-approve if clean
+
+    const { error } = await supabase.from('community_messages').insert({
         nickname,
         email,
         message,
         marketing_consent: marketingConsent,
-        is_approved: false, // Always requires moderation
+        is_approved: isApproved,
     });
 
     if (error) {
@@ -28,7 +41,12 @@ export async function postMessage(formData: FormData) {
         return { error: 'Error enviando el mensaje. Por favor intenta de nuevo.' };
     }
 
-    return { success: 'Mensaje enviado. Estará visible después de la aprobación del moderador.' };
+    if (isApproved) {
+        revalidatePath('/community');
+        return { success: 'Mensaje enviado!' };
+    } else {
+        return { success: 'Mensaje recibido. Está pendiente de moderación.' };
+    }
 }
 
 export async function approveMessage(id: string) {
