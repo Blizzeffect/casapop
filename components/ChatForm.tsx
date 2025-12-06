@@ -50,20 +50,20 @@ export default function ChatForm() {
             <form action={handleSubmit} className="space-y-4">
                 <div>
                     <label className="block text-sm text-gray-400 mb-1">Nickname</label>
-                    <div className="flex gap-2">
+                    <div className="relative">
                         <input
                             type="text"
                             name="nickname"
                             required
                             value={nickname}
                             onChange={(e) => setNickname(e.target.value)}
-                            className="flex-1 bg-dark border border-gray-700 rounded px-4 py-2 text-white focus:border-cyan outline-none transition-colors placeholder:text-gray-600"
+                            className="w-full bg-dark border border-gray-700 rounded px-4 py-2 pr-12 text-white focus:border-cyan outline-none transition-colors placeholder:text-gray-600"
                             placeholder="FunkoFan99"
                         />
                         <button
                             type="button"
                             onClick={handleRandomNickname}
-                            className="bg-dark border border-gray-700 hover:border-magenta hover:text-magenta text-gray-400 px-3 rounded transition-all active:scale-95"
+                            className="absolute right-1 top-1 bottom-1 px-3 text-gray-400 hover:text-cyan hover:bg-white/5 rounded transition-colors"
                             title="Generar nombre aleatorio"
                         >
                             🎲
@@ -82,26 +82,32 @@ export default function ChatForm() {
                 </div>
                 <div>
                     <label className="block text-sm text-gray-400 mb-1">Mensaje</label>
-                    <textarea
-                        name="message"
-                        required
-                        rows={3}
-                        value={message}
-                        onChange={(e) => setMessage(e.target.value)}
-                        className="w-full bg-dark border border-gray-700 rounded px-4 py-2 text-white focus:border-cyan outline-none transition-colors placeholder:text-gray-600 mb-2"
-                        placeholder="¡Hola a todos!"
-                    />
-                    <div className="flex flex-wrap gap-2">
-                        {thematicEmojis.map((emoji) => (
-                            <button
-                                key={emoji}
-                                type="button"
-                                onClick={() => handleAddEmoji(emoji)}
-                                className="text-lg hover:scale-125 transition-transform p-1"
-                            >
-                                {emoji}
-                            </button>
-                        ))}
+                    <div className="bg-dark border border-gray-700 rounded-lg p-2 focus-within:border-cyan transition-colors">
+                        <textarea
+                            name="message"
+                            required
+                            rows={3}
+                            value={message}
+                            onChange={(e) => setMessage(e.target.value)}
+                            className="w-full bg-transparent text-white outline-none placeholder:text-gray-600 resize-none"
+                            placeholder="¡Hola a todos!"
+                        />
+                        <div className="border-t border-gray-700 pt-2 mt-2">
+                            <p className="text-xs text-gray-500 mb-2">Emojis Temáticos:</p>
+                            <div className="flex flex-wrap gap-2 justify-between sm:justify-start">
+                                {thematicEmojis.map((emoji) => (
+                                    <button
+                                        key={emoji}
+                                        type="button"
+                                        onClick={() => handleAddEmoji(emoji)}
+                                        className="w-8 h-8 flex items-center justify-center hover:bg-white/10 rounded-full transition-colors text-lg"
+                                        title="Agregar emoji"
+                                    >
+                                        {emoji}
+                                    </button>
+                                ))}
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div className="flex items-center gap-2">
