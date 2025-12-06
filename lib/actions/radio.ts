@@ -3,17 +3,8 @@
 import { createClient } from '@/utils/supabase/server';
 import { revalidatePath } from 'next/cache';
 
-export async function uploadTrack(formData: FormData) {
+export async function saveTrack(title: string, artist: string, fileUrl: string, imageUrl: string | null) {
     const supabase = await createClient();
-
-    const title = formData.get('title') as string;
-    const artist = formData.get('artist') as string || 'Unknown Artist';
-    const image = formData.get('image') as File | null;
-    const file = formData.get('file') as File;
-
-    if (!file || !title) {
-        return { error: 'Falta el archivo de audio o el título' };
-    }
 
     // Verify auth
     const { data: { user }, error: authError } = await supabase.auth.getUser();
@@ -21,45 +12,9 @@ export async function uploadTrack(formData: FormData) {
         return { error: 'Unauthorized' };
     }
 
-    // Upload Audio to Music Folder
-    const fileExt = file.name.split('.').pop();
-    const fileName = `${Date.now()}_${Math.random().toString(36).substring(7)}.${fileExt}`;
-    const filePath = `tracks/${fileName}`;
-
-    const { error: uploadError } = await supabase.storage
-        .from('radio_music')
-        .upload(filePath, file);
-
-    if (uploadError) {
-        console.error('Upload Error:', uploadError);
-        return { error: 'Error subiendo el archivo de audio' };
+    if (!title || !fileUrl) {
+        return { error: 'Falta título o archivo de audio' };
     }
-
-    // Upload Image if provided
-    let imageUrl = null;
-    if (image && image.size > 0) {
-        const imgExt = image.name.split('.').pop();
-        const imgName = `art_${Date.now()}_${Math.random().toString(36).substring(7)}.${imgExt}`;
-        const imgPath = `art/${imgName}`;
-
-        const { error: imgUploadError } = await supabase.storage
-            .from('radio_music')
-            .upload(imgPath, image);
-
-        if (!imgUploadError) {
-            const { data: imgUrlData } = supabase.storage
-                .from('radio_music')
-                .getPublicUrl(imgPath);
-            imageUrl = imgUrlData.publicUrl;
-        }
-    }
-
-    // Get Public URL for Audio
-    const { data: publicUrlData } = supabase.storage
-        .from('radio_music')
-        .getPublicUrl(filePath);
-
-    const fileUrl = publicUrlData.publicUrl;
 
     // Insert into DB
     const { error: dbError } = await supabase
@@ -78,7 +33,7 @@ export async function uploadTrack(formData: FormData) {
     }
 
     revalidatePath('/admin/radio');
-    return { success: 'Pista añadida correctamente' };
+    return { success: 'Pista guardada correctamente' };
 }
 
 export async function deleteTrack(id: string, fileUrl: string) {
