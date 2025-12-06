@@ -134,7 +134,7 @@ export default function Home() {
 
       {/* NAVIGATION */}
       <nav
-        className={`fixed top-0 left-0 right-0 z-40 transition-all duration-300 ${navbarBg ? 'bg-black/80 backdrop-blur-md' : ''}`}
+        className={`fixed top-0 left-0 right-0 z-40 transition-all duration-300 ${navbarBg ? 'bg-black/30 backdrop-blur-md' : ''}`}
       >
         <div className="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
           {/* Logo */}

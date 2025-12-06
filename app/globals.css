@@ -46,7 +46,11 @@
 }
 
 body {
-  background: var(--background);
+  background-image: url('/background-store.jpg');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  background-repeat: no-repeat;
   color: var(--foreground);
   font-family: var(--font-sans);
 }
