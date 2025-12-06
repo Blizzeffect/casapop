@@ -200,8 +200,8 @@ export default function Home() {
       <section className="relative w-full h-[70vh] flex items-center justify-center overflow-hidden pt-20">
         <div className="absolute inset-0 z-0">
           <Image
-            src="/hero-bg.jpg"
-            alt="Hero Background"
+            src="/background-store.jpg"
+            alt="Casa Funko Store Background"
             fill
             className="object-cover opacity-60"
             priority
