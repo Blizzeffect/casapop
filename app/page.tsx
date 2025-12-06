@@ -153,6 +153,7 @@ export default function Home() {
           {/* Menu Desktop */}
           <div className="hidden md:flex gap-8 items-center font-medium">
             <a href="/blog" className="text-gray-300 hover:text-cyan transition">Blog</a>
+            <a href="/community" className="text-gray-300 hover:text-cyan transition">Comunidad</a>
             <a href="#shop" className="text-cyan hover:text-white transition">Tienda</a>
             <a href="/wishlist" className="text-gray-300 hover:text-magenta transition flex items-center gap-1">
               <span>❤️</span> Favoritos
@@ -184,6 +185,7 @@ export default function Home() {
         {mobileMenuOpen && (
           <div className="md:hidden bg-dark-2 border-t border-cyan/20 animate-slide-down">
             <a href="/blog" className="block px-4 py-3 text-gray-300 hover:bg-dark" onClick={() => setMobileMenuOpen(false)}>Blog</a>
+            <a href="/community" className="block px-4 py-3 text-gray-300 hover:bg-dark" onClick={() => setMobileMenuOpen(false)}>Comunidad</a>
             <a href="#shop" className="block px-4 py-3 text-cyan hover:bg-dark" onClick={() => setMobileMenuOpen(false)}>Tienda</a>
             <a href="#contact" className="block px-4 py-3 text-gray-300 hover:bg-dark" onClick={() => setMobileMenuOpen(false)}>Contacto</a>
             <button
