@@ -17,26 +17,58 @@ export default function ChatForm() {
         } else if (res?.success) {
             setStatus('success');
             setFeedback(res.success as string);
-            // Reset form if needed, but native form reset happens on refresh or via ref.
-            // Easiest is to just show success message.
-            const form = document.querySelector('form') as HTMLFormElement;
-            if (form) form.reset();
+            setNickname('');
+            setMessage('');
         }
     }
 
+    const [nickname, setNickname] = useState('');
+    const [message, setMessage] = useState('');
+
+    const randomNicknames = [
+        'FunkoMaster', 'PopHunter', 'NeonVibes', 'RetroGamer', 'PixelHero',
+        'VinylAddict', 'BoxCollector', 'MintCondition', 'ChaseHunter', 'GeekSquad'
+    ];
+
+    const thematicEmojis = ['✨', '📦', '🤖', '🦸', '🦄', '💜', '💙', '🎲', '👾', '🕹️', '🎸', '⚡'];
+
+    const handleRandomNickname = () => {
+        const random = randomNicknames[Math.floor(Math.random() * randomNicknames.length)];
+        const randomSuffix = Math.floor(Math.random() * 100);
+        setNickname(`${random}${randomSuffix}`);
+    };
+
+    const handleAddEmoji = (emoji: string) => {
+        setMessage((prev) => prev + emoji);
+    };
+
     return (
-        <div className="bg-dark-2 p-6 rounded-xl border border-cyan/20">
-            <h3 className="text-xl font-heading font-bold text-white mb-4">Deja tu huella</h3>
+        <div className="bg-dark-2/80 backdrop-blur-sm p-6 rounded-xl border border-cyan/20 shadow-[0_0_15px_rgba(0,245,255,0.1)]">
+            <h3 className="text-xl font-heading font-bold text-white mb-4 flex items-center gap-2">
+                <span>💬</span> Deja tu huella
+            </h3>
             <form action={handleSubmit} className="space-y-4">
                 <div>
                     <label className="block text-sm text-gray-400 mb-1">Nickname</label>
-                    <input
-                        type="text"
-                        name="nickname"
-                        required
-                        className="w-full bg-dark border border-gray-700 rounded px-4 py-2 text-white focus:border-cyan outline-none"
-                        placeholder="FunkoFan99"
-                    />
+                    <div className="flex gap-2">
+                        <input
+                            type="text"
+                            name="nickname"
+                            required
+                            value={nickname}
+                            onChange={(e) => setNickname(e.target.value)}
+                            className="flex-1 bg-dark border border-gray-700 rounded px-4 py-2 text-white focus:border-cyan outline-none transition-colors placeholder:text-gray-600"
+                            placeholder="FunkoFan99"
+                        />
+                        <button
+                            type="button"
+                            onClick={handleRandomNickname}
+                            className="bg-dark border border-gray-700 hover:border-magenta hover:text-magenta text-gray-400 px-3 rounded transition-all active:scale-95"
+                            title="Generar nombre aleatorio"
+                        >
+                            🎲
+                        </button>
+                    </div>
                 </div>
                 <div>
                     <label className="block text-sm text-gray-400 mb-1">Email (Privado)</label>
@@ -44,7 +76,7 @@ export default function ChatForm() {
                         type="email"
                         name="email"
                         required
-                        className="w-full bg-dark border border-gray-700 rounded px-4 py-2 text-white focus:border-cyan outline-none"
+                        className="w-full bg-dark border border-gray-700 rounded px-4 py-2 text-white focus:border-cyan outline-none transition-colors placeholder:text-gray-600"
                         placeholder="tu@email.com"
                     />
                 </div>
@@ -54,9 +86,23 @@ export default function ChatForm() {
                         name="message"
                         required
                         rows={3}
-                        className="w-full bg-dark border border-gray-700 rounded px-4 py-2 text-white focus:border-cyan outline-none"
+                        value={message}
+                        onChange={(e) => setMessage(e.target.value)}
+                        className="w-full bg-dark border border-gray-700 rounded px-4 py-2 text-white focus:border-cyan outline-none transition-colors placeholder:text-gray-600 mb-2"
                         placeholder="¡Hola a todos!"
                     />
+                    <div className="flex flex-wrap gap-2">
+                        {thematicEmojis.map((emoji) => (
+                            <button
+                                key={emoji}
+                                type="button"
+                                onClick={() => handleAddEmoji(emoji)}
+                                className="text-lg hover:scale-125 transition-transform p-1"
+                            >
+                                {emoji}
+                            </button>
+                        ))}
+                    </div>
                 </div>
                 <div className="flex items-center gap-2">
                     <input
