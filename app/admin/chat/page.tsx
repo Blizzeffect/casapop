@@ -21,7 +21,7 @@ export default async function AdminChatPage() {
             <div className="bg-dark-2 rounded-xl border border-gray-800 overflow-hidden">
                 <table className="w-full text-left border-collapse">
                     <thead>
-                        <tr className="bg-black/40 text-gray-400 border-b border-gray-800 text-sm uppercas">
+                        <tr className="bg-black/40 text-gray-400 border-b border-gray-800 text-sm uppercase">
                             <th className="p-4">Fecha</th>
                             <th className="p-4">Usuario</th>
                             <th className="p-4">Mensaje</th>
@@ -53,13 +53,19 @@ export default async function AdminChatPage() {
                                 </td>
                                 <td className="p-4 text-right space-x-2">
                                     {!msg.is_approved && (
-                                        <form action={approveMessage.bind(null, msg.id)} className="inline-block">
+                                        <form action={async () => {
+                                            'use server';
+                                            await approveMessage(msg.id);
+                                        }} className="inline-block">
                                             <button className="text-green-400 hover:text-green-300 font-bold text-sm px-3 py-1 border border-green-500/30 rounded hover:bg-green-500/10 transition">
                                                 Aprobar
                                             </button>
                                         </form>
                                     )}
-                                    <form action={deleteMessage.bind(null, msg.id)} className="inline-block">
+                                    <form action={async () => {
+                                        'use server';
+                                        await deleteMessage(msg.id);
+                                    }} className="inline-block">
                                         <button className="text-red-400 hover:text-red-300 font-bold text-sm px-3 py-1 border border-red-500/30 rounded hover:bg-red-500/10 transition">
                                             Eliminar
                                         </button>
