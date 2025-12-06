@@ -35,16 +35,16 @@ insert into storage.buckets (id, name, public)
 values ('radio_music', 'radio_music', true)
 on conflict (id) do nothing;
 
-create policy "Public Access"
+create policy "Radio Public Access"
   on storage.objects for select
   using ( bucket_id = 'radio_music' );
 
-create policy "Auth Upload"
+create policy "Radio Auth Upload"
   on storage.objects for insert
   to authenticated
   with check ( bucket_id = 'radio_music' );
 
-create policy "Auth Delete"
+create policy "Radio Auth Delete"
   on storage.objects for delete
   to authenticated
   using ( bucket_id = 'radio_music' );
